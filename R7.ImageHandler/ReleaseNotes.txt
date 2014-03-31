@@ -1,0 +1,14 @@
+﻿<h3>Version 1.0.0</h3>
+<p>This is the initial release of R7.ImageHandler, based on BitBoxx ImageHandler v1.5.1 code, which provides better DNN Platform integration and some new features.</p>
+<p>Changes from the original includes:</p>
+<ul>
+	<li>DNN Platform is required to use R7.ImageHandler.</li> 
+	<li>Allow use DNN "fileid" and "fileticket" parameters in the URL.</li>
+	<li>Cache strategy changed to allow unlimited cache time for local file image sources.</li>
+	<li>Allow set server/client (or both) cache time in web.config and override it with "cachetime" URL parameter.</li>
+	<li>Allow set various image processing options in web.config.</li>
+	<li>Allow set server cache path in web.config througt ServerCachePath variable.</li>
+	<li>Allow use portal-level cache, using [PORTALID] template parameter in ServerCachePath in web.config.</li>
+	<li>DNN cacheability settings used for client cache.</li>
+</ul>
+<p><strong>Note:</strong> No unit tests and no GeneratedImage ASP.NET control in this version, sorry.</p>

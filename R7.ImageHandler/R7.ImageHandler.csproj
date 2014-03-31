@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3690864E-F560-4420-8583-FBA2E72DDAC6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>R7.ImageHandler</RootNamespace>
+    <AssemblyName>R7.ImageHandler</AssemblyName>
+    <ReleaseVersion>1.0.0</ReleaseVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\bin</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data" />
+    <Reference Include="zxing">
+      <HintPath>lib\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationBlocks.Data">
+      <HintPath>lib\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions.Design" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="DotNetNuke">
+      <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ImageHandlerInternal.cs" />
+    <Compile Include="ImageInfo.cs" />
+    <Compile Include="R7.ImageHandler.cs" />
+    <Compile Include="Quantizers\GrayscaleQuantizer.cs" />
+    <Compile Include="Quantizers\OctreeQuantizer.cs" />
+    <Compile Include="Quantizers\PaletteQuantizer.cs" />
+    <Compile Include="Transforms\ImageBarcodeTransform.cs" />
+    <Compile Include="Transforms\ImageBrightnessTransform.cs" />
+    <Compile Include="Transforms\ImageContrastTransform.cs" />
+    <Compile Include="Transforms\ImageCounterTransform.cs" />
+    <Compile Include="Transforms\ImageDbTransform.cs" />
+    <Compile Include="Transforms\ImageGammaTransform.cs" />
+    <Compile Include="Transforms\ImageGreyscaleTransform.cs" />
+    <Compile Include="Transforms\ImageInvertTransform.cs" />
+    <Compile Include="Transforms\ImagePercentageTransform.cs" />
+    <Compile Include="Transforms\ImagePlaceHolderTransform.cs" />
+    <Compile Include="Transforms\ImageResizeTransform.cs" />
+    <Compile Include="Transforms\ImageRotateFlipTransform.cs" />
+    <Compile Include="Transforms\ImageScheduleTransform.cs" />
+    <Compile Include="Transforms\ImageUrlImageTransform.cs" />
+    <Compile Include="Transforms\ImageUrlTransform.cs" />
+    <Compile Include="Transforms\ImageWatermarkTransform.cs" />
+    <Compile Include="Transforms\IEBrowser.cs" />
+    <Compile Include="Transforms\ImageTransformBase.cs" />
+    <Compile Include="ImageHandlerBase.cs" />
+    <Compile Include="FileLinkClickController\FileLinkClickController.cs" />
+    <Compile Include="FileLinkClickController\IFileLinkClickController.cs" />
+    <Compile Include="Modes\ImageResizeMode.cs" />
+    <Compile Include="Modes\UrlRatioMode.cs" />
+    <Compile Include="Modes\WatermarkPositionMode.cs" />
+    <Compile Include="ImageStore\IImageStore.cs" />
+    <Compile Include="ImageStore\DiskImageStore.cs" />
+    <Compile Include="Utils.cs" />
+    <Compile Include="Quantizers\QuantizerBase.cs" />
+    <Compile Include="ImageHandlerSettings.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="imagehandler.ashx" />
+    <None Include="R7.ImageHandler.dnn" />
+    <None Include="License.txt" />
+    <None Include="ReleaseNotes.txt" />
+    <None Include="excluded\Resources\WebResources.resx" />
+    <None Include="excluded\Resources\WebResources.Designer.cs" />
+    <None Include="excluded\GeneratedImage.cs" />
+    <None Include="excluded\GeneratedImageDesigner.cs" />
+    <None Include="excluded\ImageTransformCollectionEditor.cs" />
+    <None Include="excluded\ImageParameter.cs" />
+    <None Include="Notes\Cache.txt" />
+    <None Include="Notes\Test.txt" />
+    <None Include="Package.cmd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Quantizers\" />
+    <Folder Include="Transforms\" />
+    <Folder Include="excluded\" />
+    <Folder Include="FileLinkClickController\" />
+    <Folder Include="Modes\" />
+    <Folder Include="ImageStore\" />
+    <Folder Include="Notes\" />
+  </ItemGroup>
+</Project>

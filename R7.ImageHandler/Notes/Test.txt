@@ -1,0 +1,3 @@
+﻿
+http://localhost/imagehandler.ashx?file=/portals/0/Images/Banner1.jpg&width=256
+http://localhost/imagehandler.ashx?fileid=159&width=200
