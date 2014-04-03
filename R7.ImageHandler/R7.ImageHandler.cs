@@ -38,6 +38,7 @@ using System.IO;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.FileSystem;
+using ImageMagick;
 
 namespace R7.ImageHandler
 {
@@ -45,12 +46,14 @@ namespace R7.ImageHandler
 	{
 		private string defaultImageFile = "";
 
-		private Image EmptyImage
+		private MagickImage EmptyImage
 		{
 			get
 			{
-				var emptyBmp = new Bitmap (1, 1, PixelFormat.Format1bppIndexed);
-				emptyBmp.MakeTransparent ();
+				var emptyBmp = new MagickImage (new MagickColor (Color.White), 1, 1);
+
+				emptyBmp.Transparent (new MagickColor (Color.White));
+
 				ContentType = ImageFormat.Png;
 
 				if (!string.IsNullOrEmpty (defaultImageFile))
@@ -81,14 +84,14 @@ namespace R7.ImageHandler
 
 					if (File.Exists (defaultImageFile))
 					{
-						emptyBmp = new Bitmap (Image.FromFile (defaultImageFile, true));
+						emptyBmp = new MagickImage (defaultImageFile);
 					}
 					else
 					{
 						defaultImageFile = Path.GetFullPath (HttpContext.Current.Request.PhysicalApplicationPath + defaultImageFile);
 						if (File.Exists (defaultImageFile))
 						{
-							emptyBmp = new Bitmap (Image.FromFile (defaultImageFile, true));
+							emptyBmp = new MagickImage (defaultImageFile);
 						}
 					}
 				}
@@ -290,6 +293,7 @@ namespace R7.ImageHandler
 				return new ImageInfo (EmptyImage);
 			}
 
+			#if REVIEWED
 			// Db Transform
 			if (!string.IsNullOrEmpty (parameters ["db"]))
 			{
@@ -620,19 +624,23 @@ namespace R7.ImageHandler
 				ImageTransforms.Add (scheduleTrans);
 			}
 
+			#endif
+
 			// Resize-Transformation (only if not placeholder or barcode)
 			if (string.IsNullOrEmpty (parameters ["placeholder"]) && string.IsNullOrEmpty (parameters ["barcode"]) &&
 			             (!string.IsNullOrEmpty (parameters ["width"]) || !string.IsNullOrEmpty (parameters ["height"]) ||
 			             (!string.IsNullOrEmpty (parameters ["maxwidth"]) || !string.IsNullOrEmpty (parameters ["maxheight"]))))
 			{
-				var resizeTrans = new ImageResizeTransform ();
+				var resizeTrans = new MagickResizeTransform ();
 				resizeTrans.Mode = ImageResizeMode.Fit;
 
+				/*
 				resizeTrans.InterpolationMode = Settings.InterpolationMode;
 				resizeTrans.PixelOffsetMode = Settings.PixelOffsetMode;
 				resizeTrans.SmoothingMode = Settings.SmoothingMode;
 				resizeTrans.CompositingQuality = Settings.CompositingQuality;
-				/*
+*/
+/*
 				resizeTrans.InterpolationMode = InterpolationMode.HighQualityBicubic;
 				resizeTrans.PixelOffsetMode = PixelOffsetMode.HighQuality;
 				resizeTrans.SmoothingMode = SmoothingMode.HighQuality;
@@ -672,6 +680,7 @@ namespace R7.ImageHandler
 				ImageTransforms.Add (resizeTrans);
 			}
 
+			#if REVIEWED
 			// Watermark Transform
 			if (!string.IsNullOrEmpty (parameters ["watermarktext"]))
 			{
@@ -884,6 +893,8 @@ namespace R7.ImageHandler
 
 				ImageTransforms.Add (placeHolderTrans);
 			}
+
+			#endif
 
 			if (imgFile == string.Empty)
 			{

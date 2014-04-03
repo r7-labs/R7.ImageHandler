@@ -1,5 +1,5 @@
 ﻿//
-// ImageInfo.cs
+// ImageTransformBase.cs
 //
 // Author:
 //       Roman M. Yagodin <roman.yagodin@gmail.com>
@@ -24,44 +24,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
-using System.Drawing;
-using System.Net;
+using System.ComponentModel;
 using ImageMagick;
 
 namespace R7.ImageHandler
 {
-	public class ImageInfo
+    /// <summary>
+    /// An abstract ImageTransform class
+    /// </summary>
+	public abstract class MagickTransformBase 
 	{
-		public MagickImage Image { get; private set; }
+		// Transform params?
 
-		public byte[] ImageByteBuffer { get; private set; }
-
-		public HttpStatusCode? HttpStatusCode { get; private set; }
-
-		public ImageInfo (HttpStatusCode statusCode)
-		{
-			HttpStatusCode = statusCode;
-		}
-
-		public ImageInfo (MagickImage image)
-		{
-			if (image == null)
-			{
-				throw new ArgumentNullException ("Image cannot be null");
-			}
-
-			Image = image;
-		}
-
-		public ImageInfo (byte[] imageBuffer)
-		{
-			if (imageBuffer == null)
-			{
-				throw new ArgumentNullException ("ImageBuffer cannot be null");
-			}
-
-			ImageByteBuffer = imageBuffer;
-		}
-	}
+		public abstract MagickImage ProcessImage (MagickImage image);
+    
+        // REVIEW: should this property be abstract?
+        [Browsable(false)]
+        public virtual string UniqueString {
+            get {
+                return GetType().FullName;
+            }
+        }
+    }
 }

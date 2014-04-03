@@ -51,6 +51,9 @@
     <Reference Include="DotNetNuke">
       <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
     </Reference>
+    <Reference Include="Magick.NET-x64">
+      <HintPath>lib\Magick.NET-x64.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -89,6 +92,8 @@
     <Compile Include="Utils.cs" />
     <Compile Include="Quantizers\QuantizerBase.cs" />
     <Compile Include="ImageHandlerSettings.cs" />
+    <Compile Include="Transforms\MagickTransformBase.cs" />
+    <Compile Include="Transforms\MagickResizeTransform.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

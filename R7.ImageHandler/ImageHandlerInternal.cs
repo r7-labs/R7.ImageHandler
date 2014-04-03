@@ -37,6 +37,7 @@ using System.Web;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
+using ImageMagick;
 
 //using Bitboxx.Web.GeneratedImage.ImageQuantization;
 //using Bitboxx.Web.GeneratedImage.Transform;
@@ -53,7 +54,7 @@ namespace R7.ImageHandler
 			get { return DiskImageStore.Instance; }
 		}
 
-		public List<ImageTransformBase> ImageTransforms { get; private set; }
+		public List<MagickTransformBase> ImageTransforms { get; private set; }
 
 		public ImageHandlerInternal ()
 		{
@@ -61,7 +62,7 @@ namespace R7.ImageHandler
 			Settings = ImageHandlerSettings.Instance;
 
 			ContentType = ImageFormat.Jpeg;
-			ImageTransforms = new List<ImageTransformBase> ();
+			ImageTransforms = new List<MagickTransformBase> ();
 		}
 
 		private HttpCacheability GetDnnCacheability()
@@ -177,7 +178,7 @@ namespace R7.ImageHandler
 			return Utils.GetIDFromBytes (ASCIIEncoding.ASCII.GetBytes (builder.ToString ()));
 		}
 
-		private Image GetImageThroughTransforms (Image image)
+		private MagickImage GetImageThroughTransforms (MagickImage image)
 		{
 			var tmpImage = image;
 
@@ -187,14 +188,16 @@ namespace R7.ImageHandler
 			return tmpImage;
 		}
 
-		private Image GetImageThroughTransforms (byte[] buffer)
+		private MagickImage GetImageThroughTransforms (byte[] buffer)
 		{
-			var memoryStream = new MemoryStream (buffer);
-			return GetImageThroughTransforms (Image.FromStream (memoryStream));
+			return GetImageThroughTransforms (new MagickImage(buffer));
 		}
 
-		private void RenderImage (Image image, Stream outStream)
+		private void RenderImage (MagickImage image, Stream outStream)
 		{
+			image.Write (outStream);
+
+			/*
 			if (ContentType == ImageFormat.Gif)
 			{
 				var quantizer = new OctreeQuantizer (255, 8);
@@ -209,9 +212,7 @@ namespace R7.ImageHandler
 				encParams.Param [0] = new EncoderParameter (System.Drawing.Imaging.Encoder.Quality, Settings.ImageCompression);
 				ImageCodecInfo ici = Utils.GetEncoderInfo (Utils.GetImageMimeType (ContentType));
 				image.Save (outStream, ici, encParams);
-			}
+			}*/
 		}
-
-
 	}
 }
