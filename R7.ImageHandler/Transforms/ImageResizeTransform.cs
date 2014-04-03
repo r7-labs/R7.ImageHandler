@@ -260,8 +260,8 @@ namespace R7.ImageHandler
 
 			graphics.FillRectangle(new SolidBrush(BackColor),new Rectangle(0,0,this.Width + 2*_border ,this.Width + 2*_border));
 			graphics.DrawImage(img, 
-				new Rectangle ((this.Width - resizeWidth) / 2 + _border - 2, 
-					(this.Width - resizeHeight) / 2 + _border - 2, resizeWidth + 4, resizeHeight + 4),
+				new Rectangle ((this.Width - resizeWidth) / 2 + _border, 
+					(this.Width - resizeHeight) / 2 + _border, resizeWidth, resizeHeight),
 				// HACK: makes 2px border less visible
 				new Rectangle (2, 2, img.Width - 4, img.Height - 4), 
 				GraphicsUnit.Pixel
