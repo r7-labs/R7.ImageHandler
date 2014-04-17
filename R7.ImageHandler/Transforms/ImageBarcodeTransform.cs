@@ -71,6 +71,10 @@ namespace R7.ImageHandler
         [Category("Behavior")]
         public int Border { get; set; }
 
+		[DefaultValue("")]
+		[Category("Behavior")]
+		public string Encoding { get; set; }
+
 		public override string UniqueString
 		{
 			get { return base.UniqueString + this.Type + "-" + this.Width.ToString() + "-" + this.Height.ToString() + this.Content + "-" + this.Border.ToString(); }
@@ -86,7 +90,8 @@ namespace R7.ImageHandler
 
 		public override Image ProcessImage(Image image)
 		{
-		    BarcodeWriter barcodeWriter = new BarcodeWriter();
+			var barcodeWriter = new BarcodeWriter ();
+
 		    switch (Type)
 		    {
                 case "upca":
@@ -129,12 +134,18 @@ namespace R7.ImageHandler
                     barcodeWriter.Format = BarcodeFormat.DATA_MATRIX;
 		            break;
 		    }
+
 		    barcodeWriter.Options = new EncodingOptions
 		                            {
 		                                Height = Height,
 		                                Width = Width,
 		                                Margin = Border
 		                            };
+
+			// set character encoding, if specified
+			// NOTE: Need more info about ZXing-supported encodings
+			if (!string.IsNullOrEmpty(Encoding))
+				barcodeWriter.Options.Hints.Add(EncodeHintType.CHARACTER_SET, Encoding);
 
 		    Bitmap bitmap = barcodeWriter.Write(Content);
 		    return (Image) bitmap;

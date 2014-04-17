@@ -562,6 +562,9 @@ namespace R7.ImageHandler
 				barcodeTrans.Width = 100;
 				barcodeTrans.Height = 100;
 
+				if (!string.IsNullOrEmpty (parameters ["encoding"]))
+					barcodeTrans.Encoding = parameters ["encoding"];
+
 				if (!string.IsNullOrEmpty (parameters ["type"]) && 
 					"upca,ean8,ean13,code39,code128,itf,codabar,plessey,msi,qrcode,pdf417,aztec,datamatrix,".LastIndexOf (parameters ["type"].ToLowerInvariant() + ",") > -1)
 				{
@@ -569,7 +572,7 @@ namespace R7.ImageHandler
 				}
 				if (!string.IsNullOrEmpty (parameters ["content"]))
 				{
-					barcodeTrans.Content = parameters ["content"];
+					barcodeTrans.Content = HttpUtility.UrlDecode(parameters ["content"]);
 				}
 				if (!string.IsNullOrEmpty (parameters ["width"]))
 				{
