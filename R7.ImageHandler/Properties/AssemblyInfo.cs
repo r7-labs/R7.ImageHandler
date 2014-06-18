@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle ("R7.ImageHandler")]
 [assembly: AssemblyDescription ("")]
 [assembly: AssemblyConfiguration ("")]
-[assembly: AssemblyCompany ("R7 Solutions")]
+[assembly: AssemblyCompany ("R7.Solutions")]
 [assembly: AssemblyProduct ("R7.ImageHandler")]
 [assembly: AssemblyCopyright ("Roman M. Yagodin")]
 [assembly: AssemblyTrademark ("")]
