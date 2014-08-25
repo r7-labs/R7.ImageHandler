@@ -30,6 +30,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -64,7 +65,7 @@ namespace R7.ImageHandler
 			ImageTransforms = new List<ImageTransformBase> ();
 		}
 
-		private HttpCacheability GetDnnCacheability()
+		private HttpCacheability GetDnnCacheability ()
 		{
 			var userId = PortalController.GetCurrentPortalSettings ().UserId;
 
@@ -72,45 +73,65 @@ namespace R7.ImageHandler
 			{
 				switch (Host.AuthenticatedCacheability)
 				{
-				case "0":
-					return HttpCacheability.NoCache;
-				case "1":
-					return HttpCacheability.Private;
-				case "2":
-					return HttpCacheability.Public;
-				case "3":
-					return HttpCacheability.Server;
-				case "4":
-					return HttpCacheability.ServerAndNoCache;
-				case "5":
-					return HttpCacheability.ServerAndPrivate;
+					case "0":
+						return HttpCacheability.NoCache;
+					case "1":
+						return HttpCacheability.Private;
+					case "2":
+						return HttpCacheability.Public;
+					case "3":
+						return HttpCacheability.Server;
+					case "4":
+						return HttpCacheability.ServerAndNoCache;
+					case "5":
+						return HttpCacheability.ServerAndPrivate;
 				}
 			}
 			return HttpCacheability.Public;
 		}
 
 		public void HandleImageRequest (HttpContextBase context, 
-			Func<NameValueCollection, string, ImageInfo> imageGenCallback, 
-			Func<NameValueCollection, string> imageFilenameCallback, 
-			string uniqueIdStringSeed)
+		                                Func<NameValueCollection, string, ImageInfo> imageGenCallback, 
+		                                Func<NameValueCollection, string> imageFilenameCallback, 
+		                                string uniqueIdStringSeed)
 		{
 			context.Response.Clear ();
 			context.Response.ContentType = Utils.GetImageMimeType (ContentType);
 
-			var cachePolicy = context.Response.Cache;
-			cachePolicy.SetValidUntilExpires (true);
-			if (Settings.EnableClientCache)
-			{
-				cachePolicy.SetCacheability (GetDnnCacheability());
-				// REVIEW: Check if DNN has option about client cache expiration?
-				cachePolicy.SetExpires (Settings.Now + Settings.ClientCacheTime);
-			}
-
 			// NOTE: uniqueIdStringSeed = R7.ImageHandler.ToString()
 			var cacheId = GetUniqueIDString (context, uniqueIdStringSeed);
 
+			var cachePolicy = context.Response.Cache;
+			cachePolicy.SetValidUntilExpires (true);
+			
+			if (Settings.EnableClientCache)
+			{
+				if (!string.IsNullOrEmpty (context.Request.Headers ["If-Modified-Since"]) && 
+					!string.IsNullOrEmpty (context.Request.Headers ["If-None-Match"]))
+				{
+					var provider = CultureInfo.InvariantCulture;
+					var lastMod = DateTime.ParseExact (context.Request.Headers ["If-Modified-Since"], "r", provider).ToLocalTime ();
+					var etag = context.Request.Headers ["If-None-Match"];
+					if (lastMod + Settings.ClientCacheTime > Settings.Now && etag == cacheId)
+					{
+						// send 304 when cache time is not expired
+						context.Response.StatusCode = 304;
+						context.Response.StatusDescription = "Not Modified";
+						context.Response.End ();
+
+						return;
+					}
+				}
+				cachePolicy.SetCacheability (GetDnnCacheability ());
+				cachePolicy.SetLastModified (Settings.Now);
+
+				// REVIEW: Check if DNN has option about client cache expiration?
+				cachePolicy.SetExpires (Settings.Now + Settings.ClientCacheTime);
+				cachePolicy.SetETag (cacheId);
+			} 
+
 			// get image filename, if any
-			var imgFile = imageFilenameCallback(context.Request.QueryString);
+			var imgFile = imageFilenameCallback (context.Request.QueryString);
 
 			// try get image from server cache
 			if (Settings.EnableServerCache)
