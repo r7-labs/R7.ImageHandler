@@ -166,8 +166,8 @@ namespace R7.ImageHandler
 			}
 			Brush watermarkBrush  = new SolidBrush(Color.FromArgb(WatermarkOpacity, FontColor));
 			graphics.DrawString(this.WatermarkText, watermarkFont, watermarkBrush, x, y);
-			return image;
-	
+
+			return newBitmap;
 		}
 
 	}
