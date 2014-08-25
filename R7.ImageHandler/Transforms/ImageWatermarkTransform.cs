@@ -108,13 +108,16 @@ namespace R7.ImageHandler
 		public override Image ProcessImage(Image image)
 		{
 			Font watermarkFont = new Font(this.FontFamily, this.FontSize);
-			Graphics graphics = Graphics.FromImage(image);
+
+			Bitmap newBitmap = new Bitmap(image.Width, image.Height);
+			Graphics graphics = Graphics.FromImage(newBitmap); 
 
 			graphics.CompositingMode = CompositingMode.SourceOver;
 			graphics.CompositingQuality = CompositingQuality;
 			graphics.InterpolationMode = InterpolationMode;
 			graphics.SmoothingMode = SmoothingMode;
 
+			graphics.DrawImage(image, 0, 0); 
 
 			SizeF sz = graphics.MeasureString(this.WatermarkText, watermarkFont);
 			Single x = 0;
