@@ -60,9 +60,9 @@ namespace R7.ImageHandler
 			}
 		}
 
-		public static TimeSpan CacheTime
+		public static TimeSpan CacheExpiration
 		{
-			get { return ImageHandlerSettings.Instance.ServerCacheTime; }
+			get { return ImageHandlerSettings.Instance.ServerCacheExpiration; }
 		}
 
 		static DiskImageStore ()
@@ -99,7 +99,7 @@ namespace R7.ImageHandler
 			var path = CachePath + id;
 
 			if (!localFile)
-				path += "_" + (ImageHandlerSettings.Instance.Now + CacheTime).ToFileTime () + tmpFileExtension;
+				path += "_" + (ImageHandlerSettings.Instance.Now + CacheExpiration).ToFileTime () + tmpFileExtension;
 			else 
 				path += tmpFileExtension;
 

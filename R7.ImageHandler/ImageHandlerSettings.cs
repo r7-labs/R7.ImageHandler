@@ -63,7 +63,8 @@ namespace R7.ImageHandler
 			ImageCompression = 92;
 			AllowedDomains = new string[] { "localhost" };
 			ServerCachePath = "~/App_Data/R7.ImageHandler";
-			SetCacheTime(new TimeSpan (0, 20, 0)); // 20 minutes = 1200 seconds
+			ServerCacheExpiration = new TimeSpan (0, 20, 0); // 20 minutes = 1200 seconds
+			ClientCacheExpiration = new TimeSpan (1, 0, 0); // 1 hour = 3600 seconds
 			InterpolationMode = InterpolationMode.HighQualityBicubic;
 			PixelOffsetMode = PixelOffsetMode.HighQuality;
 			SmoothingMode = SmoothingMode.HighQuality;
@@ -113,14 +114,14 @@ namespace R7.ImageHandler
 						case "enablesecurityexceptions":
 							EnableSecurityExceptions = Convert.ToBoolean (value);
 							break;
-						case "clientcachetime":
-							ClientCacheTime = new TimeSpan(0, 0, Convert.ToInt32 (value));
+						case "clientcacheexpiration":
+							ClientCacheExpiration = new TimeSpan(0, 0, Convert.ToInt32 (value));
 							break;
-						case "servercachetime":
-							ServerCacheTime = new TimeSpan(0, 0, Convert.ToInt32 (value));
+						case "servercacheexpiration":
+							ServerCacheExpiration = new TimeSpan(0, 0, Convert.ToInt32 (value));
 							break;
-						case "cachetime":
-							SetCacheTime(new TimeSpan(0, 0, Convert.ToInt32 (value)));
+						case "cacheexpiration":
+							SetCacheExpiration(new TimeSpan(0, 0, Convert.ToInt32 (value)));
 							break;
 						case "interpolationmode":
 							InterpolationMode = (InterpolationMode)Enum.Parse(typeof(InterpolationMode), value);
@@ -162,14 +163,14 @@ namespace R7.ImageHandler
 
 		public int ImageCompression { get; private set; }
 
-		public TimeSpan ServerCacheTime { get; private set; }
+		public TimeSpan ServerCacheExpiration { get; private set; }
 
-		public TimeSpan ClientCacheTime { get; private set; }
+		public TimeSpan ClientCacheExpiration { get; private set; }
 
-		public void SetCacheTime (TimeSpan cacheTime)
+		public void SetCacheExpiration (TimeSpan cacheExpiration)
 		{ 
-			ServerCacheTime = cacheTime;
-			ClientCacheTime = cacheTime;
+			ServerCacheExpiration = cacheExpiration;
+			ClientCacheExpiration = cacheExpiration;
 		}
 
 		public InterpolationMode InterpolationMode  { get; private set; }

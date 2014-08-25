@@ -5,7 +5,7 @@
 	<li>DNN Platform is required to use R7.ImageHandler.</li> 
 	<li>Allow use DNN "fileid" and "fileticket" parameters in the URL.</li>
 	<li>Cache strategy changed to allow unlimited cache time for local file image sources.</li>
-	<li>Allow set server/client (or both) cache time in web.config and override it with "cachetime" URL parameter.</li>
+	<li>Allow set server/client (or both) cache expiration time in web.config and override it with "cacheexpiration" URL parameter.</li>
 	<li>Allow set various image processing options in web.config.</li>
 	<li>Allow set server cache path in web.config througt ServerCachePath variable.</li>
 	<li>Allow use portal-level cache, using [PORTALID] template parameter in ServerCachePath in web.config.</li>

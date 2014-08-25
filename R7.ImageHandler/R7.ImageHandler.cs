@@ -184,9 +184,9 @@ namespace R7.ImageHandler
 				}
 
 				// override cache time for single image
-				if (!string.IsNullOrEmpty (parameters ["cachetime"]))
+				if (!string.IsNullOrEmpty (parameters ["cacheexpiration"]))
 				{
-					Settings.SetCacheTime(new TimeSpan(0, 0, Convert.ToInt32 (parameters ["cachetime"])));
+					Settings.SetCacheExpiration(new TimeSpan(0, 0, Convert.ToInt32 (parameters ["cacheexpiration"])));
 				}
 
 				// Do we have a default image file ?

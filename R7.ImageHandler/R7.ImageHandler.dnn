@@ -42,7 +42,7 @@
 		      <configuration>
 		        <nodes>
 		          <node path="/configuration/appSettings" action="update" key="key" collision="ignore">
-		            <add key="R7.ImageHandler" value="EnableSecurity=false;EnableCache=true;CacheTime=1200;ServerCachePath=~\App_Data\R7.ImageHandler\;ImageCompression=92" />
+		            <add key="R7.ImageHandler" value="EnableSecurity=false;EnableCache=true;ClientCacheExpiration=3600;ServerCacheExpiration=1200;ServerCachePath=~\App_Data\R7.ImageHandler\;ImageCompression=92" />
 		          </node>
 		        </nodes>
 		      </configuration>

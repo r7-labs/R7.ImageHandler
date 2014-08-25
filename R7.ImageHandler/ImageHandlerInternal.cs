@@ -112,7 +112,7 @@ namespace R7.ImageHandler
 					var provider = CultureInfo.InvariantCulture;
 					var lastMod = DateTime.ParseExact (context.Request.Headers ["If-Modified-Since"], "r", provider).ToLocalTime ();
 					var etag = context.Request.Headers ["If-None-Match"];
-					if (lastMod + Settings.ClientCacheTime > Settings.Now && etag == cacheId)
+					if (lastMod + Settings.ClientCacheExpiration > Settings.Now && etag == cacheId)
 					{
 						// send 304 when cache time is not expired
 						context.Response.StatusCode = 304;
@@ -126,7 +126,7 @@ namespace R7.ImageHandler
 				cachePolicy.SetLastModified (Settings.Now);
 
 				// REVIEW: Check if DNN has option about client cache expiration?
-				cachePolicy.SetExpires (Settings.Now + Settings.ClientCacheTime);
+				cachePolicy.SetExpires (Settings.Now + Settings.ClientCacheExpiration);
 				cachePolicy.SetETag (cacheId);
 			} 
 
