@@ -19,7 +19,6 @@ xcopy /Y *.txt ..\%PACKAGE%\
 cd ..
 xcopy /Y ..\..\bin\R7.ImageHandler*.dll %PACKAGE%\bin\
 xcopy /Y ..\..\bin\zxing*.dll %PACKAGE%\bin\
-xcopy /Y ..\..\bin\zxing*.xml %PACKAGE%\bin\
 
 cd %PACKAGE%
 %Z7% a ..\R7.ImageHandler-%1-Install.zip *
