@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="R7.ImageHandler" type="Library" version="1.0.0">
+    <package name="R7.ImageHandler" type="Library" version="1.0.1">
       <friendlyName>R7.ImageHandler</friendlyName>
       <description>Image generator / thumbnailer for DNN Platform</description>
       <owner>
@@ -18,12 +18,14 @@
             <assembly>
               <path>bin</path>
               <name>R7.ImageHandler.dll</name>
-              <version>1.0.0.0</version>
             </assembly>
 			<assembly>
               <path>bin</path>
               <name>zxing.dll</name>
-              <version>0.12.0.0</version>
+            </assembly>
+			<assembly>
+              <path>bin</path>
+              <name>zxing.presentation.dll</name>
             </assembly>
           </assemblies>
         </component>
