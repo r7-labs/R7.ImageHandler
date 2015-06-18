@@ -27,6 +27,7 @@
             </assembly>
           </assemblies>
         </component>
+		<!--
         <component type="File">
           <files>
             <basePath />
@@ -35,12 +36,16 @@
             </file>
           </files>
         </component>
+		-->
         <component type="Config">
-		  <config>
+          <config>
 		    <configFile>web.config</configFile>
 		    <install>
 		      <configuration>
 		        <nodes>
+		          <node path="/configuration/system.webServer/handlers" action="update" key="name" collision="ignore">
+				  	<add name="R7.ImageHandler" verb="GET,HEAD" path="ImageHandler.ashx" type="R7.ImageHandler.ImageHandler, R7.ImageHandler" preCondition="integratedMode" />
+				  </node>
 		          <node path="/configuration/appSettings" action="update" key="key" collision="ignore">
 		            <add key="R7.ImageHandler" value="EnableSecurity=false;EnableCache=true;ClientCacheExpiration=3600;ServerCacheExpiration=1200;ServerCachePath=~\App_Data\R7.ImageHandler\;ImageCompression=92" />
 		          </node>
@@ -50,7 +55,8 @@
 		    <uninstall>
 		      <configuration>
 		        <nodes>
-		          <node path="/configuration/appSettings/add[@key='R7.ImageHandler']" action="remove" />
+				  <node path="/configuration/system.webServer/handlers/add[@name='R7.ImageHandler']" action="remove" />
+				  <node path="/configuration/appSettings/add[@key='R7.ImageHandler']" action="remove" />
 		        </nodes>
 		      </configuration>
 		    </uninstall>
