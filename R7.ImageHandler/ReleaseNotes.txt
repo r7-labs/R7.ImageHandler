@@ -2,7 +2,7 @@
 <ul>
     <li>Handler register directly in web.config (w/o .ashx file).</li>
     <li>Zxing.Net library dependency added via NuGet.</li>
-<ul>
+</ul>
 
 <h3>Version 1.0.0</h3>
 <p>This is the initial release of R7.ImageHandler, based on BitBoxx ImageHandler v1.5.1 code, which provides better DNN Platform integration and some new features.</p>
