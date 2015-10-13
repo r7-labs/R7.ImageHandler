@@ -4,7 +4,7 @@
 // Author:
 //       Roman M. Yagodin <roman.yagodin@gmail.com>
 //
-// Copyright (c) 2014 
+// Copyright (c) 2014-2015
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -35,12 +35,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
 
-//using Bitboxx.Web.GeneratedImage.ImageQuantization;
-//using Bitboxx.Web.GeneratedImage.Transform;
 namespace R7.ImageHandler
 {
 	public class ImageHandlerInternal
@@ -65,11 +61,9 @@ namespace R7.ImageHandler
 			ImageTransforms = new List<ImageTransformBase> ();
 		}
 
-		private HttpCacheability GetDnnCacheability ()
+        private HttpCacheability GetDnnCacheability (HttpContextBase context)
 		{
-			var userId = PortalController.GetCurrentPortalSettings ().UserId;
-
-			if (!Null.IsNull (userId))
+            if (context.Request.IsAuthenticated)
 			{
 				switch (Host.AuthenticatedCacheability)
 				{
@@ -122,7 +116,7 @@ namespace R7.ImageHandler
 						return;
 					}
 				}
-				cachePolicy.SetCacheability (GetDnnCacheability ());
+                cachePolicy.SetCacheability (GetDnnCacheability (context));
 				cachePolicy.SetLastModified (Settings.Now);
 
 				// REVIEW: Check if DNN has option about client cache expiration?
