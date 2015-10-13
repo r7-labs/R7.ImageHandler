@@ -118,10 +118,17 @@ namespace R7.ImageHandler
 				}
 				else if (!string.IsNullOrEmpty (parameters ["fileticket"]))
 				{
-					// get fileId from fileticket value
-					fileId = DotNetNuke.Services.FileSystem.FileLinkClickController.
-						Instance.GetFileIdFromLinkClick (parameters);
-				}
+                    try
+                    {
+    					// get fileId from fileticket value -
+                        // this may cause exception on wrong fileticket value
+    					fileId = FileLinkClickController.
+    						Instance.GetFileIdFromLinkClick (parameters);
+                    }
+                    catch (NullReferenceException)
+                    {
+                    }
+                }
 
 				// check if we really have such file in a DB
 				var fileInfo = DotNetNuke.Services.FileSystem.FileManager.Instance.GetFile (fileId);
