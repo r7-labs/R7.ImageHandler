@@ -1,6 +1,5 @@
-﻿#define DNN_PRE720
-
-// TODO: Undef DNN_PRE720 if build for DNN Platform version prior to 7.2.0
+﻿// Define DNN_PRE720 if build for DNN Platform version prior to 7.2.0
+#undef DNN_PRE720
 
 #region Copyright
 //
