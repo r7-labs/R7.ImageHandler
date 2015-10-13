@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="R7.ImageHandler" type="Library" version="1.0.1">
+    <package name="R7.ImageHandler" type="Library" version="1.0.2">
       <friendlyName>R7.ImageHandler</friendlyName>
       <description>Image generator / thumbnailer for DNN Platform</description>
       <owner>
@@ -12,6 +12,9 @@
       </owner>
       <license src="License.txt"></license>
       <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+      <dependencies>
+        <dependency type="CoreVersion">07.02.00</dependency>
+      </dependencies>
       <components>
         <component type="Assembly">
           <assemblies>
