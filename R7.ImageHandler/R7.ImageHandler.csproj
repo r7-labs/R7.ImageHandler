@@ -103,8 +103,6 @@
   <ItemGroup>
     <None Include="imagehandler.ashx" />
     <None Include="R7.ImageHandler.dnn" />
-    <None Include="License.txt" />
-    <None Include="ReleaseNotes.txt" />
     <None Include="excluded\Resources\WebResources.resx" />
     <None Include="excluded\Resources\WebResources.Designer.cs" />
     <None Include="excluded\GeneratedImage.cs" />
@@ -115,6 +113,8 @@
     <None Include="Notes\Test.txt" />
     <None Include="Package.cmd" />
     <None Include="packages.config" />
+    <None Include="license.htm" />
+    <None Include="releaseNotes.htm" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quantizers\" />
