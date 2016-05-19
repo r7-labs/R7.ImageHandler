@@ -111,7 +111,6 @@
     <None Include="excluded\ImageParameter.cs" />
     <None Include="Notes\Cache.txt" />
     <None Include="Notes\Test.txt" />
-    <None Include="Package.cmd" />
     <None Include="packages.config" />
     <None Include="license.htm" />
     <None Include="releaseNotes.htm" />
