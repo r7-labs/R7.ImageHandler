@@ -13,6 +13,7 @@
         <!-- Declare binaries -->
         <ItemGroup>
             <InstallBinaryFiles Include="$(MainProjectOutputPath)\R7.ImageHandler*.dll" />
+            <InstallBinaryFiles Include="$(MainProjectOutputPath)\Magick.NET-Q8-x64*.dll" />
         </ItemGroup>
         <!-- Declare manifest files -->
         <ItemGroup>

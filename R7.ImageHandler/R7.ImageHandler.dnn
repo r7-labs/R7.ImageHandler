@@ -34,6 +34,10 @@
               <path>bin</path>
               <name>Magick.NET-Q8-x64.dll</name>
             </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Magick.NET-Q8-x64.Native.dll</name>
+            </assembly>
           </assemblies>
         </component>
 		<!--

@@ -4,6 +4,7 @@
         <!-- Declare binaries -->
         <ItemGroup>
             <LocalDeployBinaryFiles Include="$(MainProjectOutputPath)\R7.ImageHandler*.dll" />
+            <LocalDeployBinaryFiles Include="$(MainProjectOutputPath)\Magick.NET-Q8-x64*.dll" />
             <LocalDeployBinaryFiles Include="$(MainProjectOutputPath)\R7.ImageHandler*.pdb" />
         </ItemGroup>
         <!-- Declare resource files -->
