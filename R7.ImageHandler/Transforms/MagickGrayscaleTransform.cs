@@ -1,5 +1,5 @@
 ﻿//
-// MagickGreyScaleTransform.cs
+// MagickGrayscaleTransform.cs
 //
 // Author:
 //       Roman M. Yagodin <roman.yagodin@gmail.com>
@@ -30,9 +30,9 @@ using ImageMagick;
 
 namespace R7.ImageHandler.Transforms
 {
-	public class MagickGreyScaleTransform: MagickTransformBase
+	public class MagickGrayscaleTransform: MagickTransformBase
 	{
-		public MagickGreyScaleTransform()
+		public MagickGrayscaleTransform()
 		{
 			InterpolationMode = InterpolationMode.HighQualityBicubic;
 			SmoothingMode = SmoothingMode.Default;

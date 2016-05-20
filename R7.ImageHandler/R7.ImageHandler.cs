@@ -803,17 +803,17 @@ namespace R7.ImageHandler
 
             #endif 
 
-			// Greyscale
-			if (!string.IsNullOrEmpty (parameters ["greyscale"]))
+			// Grayscale
+			if (!string.IsNullOrEmpty (parameters ["grayscale"]))
 			{
-				var greyscaleTrans = new MagickGreyScaleTransform ();
+				var grayscaleTrans = new MagickGrayscaleTransform ();
 
-				greyscaleTrans.InterpolationMode = InterpolationMode.HighQualityBicubic;
-				greyscaleTrans.PixelOffsetMode = PixelOffsetMode.HighQuality;
-				greyscaleTrans.SmoothingMode = SmoothingMode.HighQuality;
-				greyscaleTrans.CompositingQuality = CompositingQuality.HighQuality;
+                grayscaleTrans.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                grayscaleTrans.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                grayscaleTrans.SmoothingMode = SmoothingMode.HighQuality;
+                grayscaleTrans.CompositingQuality = CompositingQuality.HighQuality;
 				
-				ImageTransforms.Add (greyscaleTrans);
+                ImageTransforms.Add (grayscaleTrans);
 			}
 
             #if REVIEWED
