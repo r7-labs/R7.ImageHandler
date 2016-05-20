@@ -726,30 +726,27 @@ namespace R7.ImageHandler
 				ImageTransforms.Add (watermarkTrans);
 			}
 
+            #endif
+
 			// Gamma adjustment
 			if (!string.IsNullOrEmpty (parameters ["gamma"]))
 			{
-				var gammaTrans = new ImageGammaTransform ();
+				var gammaTrans = new MagickGammaTransform ();
 
 				gammaTrans.InterpolationMode = Settings.InterpolationMode;
 				gammaTrans.PixelOffsetMode = Settings.PixelOffsetMode;
 				gammaTrans.SmoothingMode = Settings.SmoothingMode;
 				gammaTrans.CompositingQuality = Settings.CompositingQuality;
 
-				/*
-				gammaTrans.InterpolationMode = InterpolationMode.HighQualityBicubic;
-				gammaTrans.PixelOffsetMode = PixelOffsetMode.HighQuality;
-				gammaTrans.SmoothingMode = SmoothingMode.HighQuality;
-				gammaTrans.CompositingQuality = CompositingQuality.HighQuality;
-			*/
-				var gamma = 1.0;
-
-				if (double.TryParse (parameters ["Gamma"], NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out gamma) && (gamma >= 0.2 && gamma <= 5))
+                double gamma;
+                if (double.TryParse (parameters ["gamma"], NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out gamma) && (gamma >= 0.2 && gamma <= 5.0))
 				{
 					gammaTrans.Gamma = gamma;
 					ImageTransforms.Add (gammaTrans);
 				}
 			}
+
+            #if REVIEWED
 
 			// Brightness adjustment
 			if (!string.IsNullOrEmpty (parameters ["brightness"]))

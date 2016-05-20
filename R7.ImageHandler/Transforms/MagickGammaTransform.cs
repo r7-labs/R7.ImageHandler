@@ -1,10 +1,10 @@
 ﻿//
-// ImageGammaTransform.cs
+// MagickGammaTransform.cs
 //
 // Author:
 //       Roman M. Yagodin <roman.yagodin@gmail.com>
 //
-// Copyright (c) 2014 
+// Copyright (c) 2014-2016 Roman M. Yagodin
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,12 +26,12 @@
 
 using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.Drawing.Drawing2D;
+using ImageMagick;
 
-namespace R7.ImageHandler
+namespace R7.ImageHandler.Transforms
 {
-	public class ImageGammaTransform : ImageTransformBase
+	public class MagickGammaTransform: MagickTransformBase
 	{
 		/// <summary>
 		/// Sets the counter value. Defaultvalue is 0
@@ -42,39 +42,22 @@ namespace R7.ImageHandler
 
 		public override string UniqueString
 		{
-			get { return base.UniqueString + "-" + this.Gamma.ToString(); }
+			get { return base.UniqueString + "-" + Gamma; }
 		}
 
-		public ImageGammaTransform()
+		public MagickGammaTransform ()
 		{
 			InterpolationMode = InterpolationMode.HighQualityBicubic;
 			SmoothingMode = SmoothingMode.Default;
 			PixelOffsetMode = PixelOffsetMode.Default;
 			CompositingQuality = CompositingQuality.HighSpeed;
-			Gamma = 1;
+			Gamma = 1.0;
 		}
 
-		public override Image ProcessImage(Image image)
+        public override MagickImage ProcessImage (MagickImage image)
 		{
-			var temp = (Bitmap)image;
-			var bmap = (Bitmap)temp.Clone();
-			Color c;
-			var gammaArray = new byte[256];
-			for (var i = 0; i < 256; ++i)
-			{
-				gammaArray[i] = (byte)Math.Min(255, (int)((255.0 * Math.Pow(i / 255.0, 1.0 / Gamma)) + 0.5));
-			}
-			
-			for (var i = 0; i < bmap.Width; i++)
-			{
-				for (var j = 0; j < bmap.Height; j++)
-				{
-					c = bmap.GetPixel(i, j);
-					bmap.SetPixel(i, j, Color.FromArgb(gammaArray[c.R],
-					   gammaArray[c.G], gammaArray[c.B]));
-				}
-			}
-			return (Image)bmap.Clone();
+            image.GammaCorrect (Gamma);
+            return image;
 		}
 	}
 }
