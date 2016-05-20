@@ -1,10 +1,10 @@
 ﻿//
-// ImageGreyscaleTransform.cs
+// MagickGreyScaleTransform.cs
 //
 // Author:
 //       Roman M. Yagodin <roman.yagodin@gmail.com>
 //
-// Copyright (c) 2014 
+// Copyright (c) 2014-2016 Roman M. Yagodin
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,14 +25,14 @@
 // THE SOFTWARE.
 
 using System;
-using System.Drawing;
 using System.Drawing.Drawing2D;
+using ImageMagick;
 
-namespace R7.ImageHandler
+namespace R7.ImageHandler.Transforms
 {
-	public class ImageGreyScaleTransform : ImageTransformBase
+	public class MagickGreyScaleTransform: MagickTransformBase
 	{
-		public ImageGreyScaleTransform()
+		public MagickGreyScaleTransform()
 		{
 			InterpolationMode = InterpolationMode.HighQualityBicubic;
 			SmoothingMode = SmoothingMode.Default;
@@ -40,22 +40,10 @@ namespace R7.ImageHandler
 			CompositingQuality = CompositingQuality.HighSpeed;
 		}
 
-		public override Image ProcessImage(Image image)
+        public override MagickImage ProcessImage (MagickImage image)
 		{
-			var temp = (Bitmap)image;
-			var bmap = (Bitmap)temp.Clone();
-			Color c;
-			for (var i = 0; i < bmap.Width; i++)
-			{
-				for (var j = 0; j < bmap.Height; j++)
-				{
-					c = bmap.GetPixel(i, j);
-					var gray = (byte)(.299 * c.R + .587 * c.G + .114 * c.B);
-
-					bmap.SetPixel(i, j, Color.FromArgb(gray, gray, gray));
-				}
-			}
-			return (Bitmap)bmap.Clone();
+            image.Grayscale (PixelIntensityMethod.Rec601Luminance);
+            return image;
 		}
 	}
 }

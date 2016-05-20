@@ -77,7 +77,6 @@
     <Compile Include="Transforms\ImageCounterTransform.cs" />
     <Compile Include="Transforms\ImageDbTransform.cs" />
     <Compile Include="Transforms\ImageGammaTransform.cs" />
-    <Compile Include="Transforms\ImageGreyscaleTransform.cs" />
     <Compile Include="Transforms\ImageInvertTransform.cs" />
     <Compile Include="Transforms\ImagePercentageTransform.cs" />
     <Compile Include="Transforms\ImagePlaceHolderTransform.cs" />
@@ -103,6 +102,7 @@
     <Compile Include="Transforms\MagickUrlTransform.cs" />
     <Compile Include="Transforms\MagickBarcodeTransform.cs" />
     <Compile Include="Transforms\MagickUrlImageTransform.cs" />
+    <Compile Include="Transforms\MagickGreyscaleTransform.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Magick.NET-Q8-x64.7.0.1.101\build\net40-client\Magick.NET-Q8-x64.targets" Condition="Exists('..\packages\Magick.NET-Q8-x64.7.0.1.101\build\net40-client\Magick.NET-Q8-x64.targets')" />

@@ -801,23 +801,22 @@ namespace R7.ImageHandler
 				}
 			}
 
+            #endif 
+
 			// Greyscale
 			if (!string.IsNullOrEmpty (parameters ["greyscale"]))
 			{
-				var greyscaleTrans = new ImageGreyScaleTransform ();
+				var greyscaleTrans = new MagickGreyScaleTransform ();
 
 				greyscaleTrans.InterpolationMode = InterpolationMode.HighQualityBicubic;
 				greyscaleTrans.PixelOffsetMode = PixelOffsetMode.HighQuality;
 				greyscaleTrans.SmoothingMode = SmoothingMode.HighQuality;
 				greyscaleTrans.CompositingQuality = CompositingQuality.HighQuality;
-				/*
-				greyscaleTrans.InterpolationMode = InterpolationMode.HighQualityBicubic;
-				greyscaleTrans.PixelOffsetMode = PixelOffsetMode.HighQuality;
-				greyscaleTrans.SmoothingMode = SmoothingMode.HighQuality;
-				greyscaleTrans.CompositingQuality = CompositingQuality.HighQuality;
-				*/
+				
 				ImageTransforms.Add (greyscaleTrans);
 			}
+
+            #if REVIEWED
 
 			// Invert
 			if (!string.IsNullOrEmpty (parameters ["invert"]))
