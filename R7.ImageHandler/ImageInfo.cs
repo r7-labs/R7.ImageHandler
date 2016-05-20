@@ -27,12 +27,13 @@
 using System;
 using System.Drawing;
 using System.Net;
+using ImageMagick;
 
 namespace R7.ImageHandler
 {
 	public class ImageInfo
 	{
-		public Image Image { get; private set; }
+		public MagickImage Image { get; private set; }
 
 		public byte[] ImageByteBuffer { get; private set; }
 
@@ -43,7 +44,7 @@ namespace R7.ImageHandler
 			HttpStatusCode = statusCode;
 		}
 
-		public ImageInfo (Image image)
+        public ImageInfo (MagickImage image)
 		{
 			if (image == null)
 			{

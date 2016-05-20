@@ -30,10 +30,11 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Net;
+using ImageMagick;
 
-namespace R7.ImageHandler
+namespace R7.ImageHandler.Transforms
 {
-	public class ImageUrlImageTransform : ImageTransformBase
+	public class MagickUrlImageTransform: MagickTransformBase
 	{
 		/// <summary>
 		/// Sets the Url. Defaultvalue is empty
@@ -47,17 +48,14 @@ namespace R7.ImageHandler
         /// </summary>
         [DefaultValue("")]
         [Category("Behavior")]
-        public Image EmptyImage { get; set; }
+        public MagickImage EmptyImage { get; set; }
 
 		public override string UniqueString
 		{
-			get
-			{
-				return base.UniqueString + "-" +  this.ImageUrl;
-			}
+            get { return base.UniqueString + "-" + ImageUrl; }
 		}
 
-        public ImageUrlImageTransform()
+        public MagickUrlImageTransform ()
 		{
 			InterpolationMode = InterpolationMode.HighQualityBicubic;
 			SmoothingMode = SmoothingMode.Default;
@@ -65,23 +63,19 @@ namespace R7.ImageHandler
 			CompositingQuality = CompositingQuality.HighSpeed;
 		}
 
-		public override Image ProcessImage(Image image)
+		public override MagickImage ProcessImage (MagickImage image)
 		{
-            HttpWebRequest httpWebRequest = (HttpWebRequest)HttpWebRequest.Create(ImageUrl);
+            var httpWebRequest = (HttpWebRequest) HttpWebRequest.Create (ImageUrl);
 
-		    try
-		    {
-                using (HttpWebResponse httpWebReponse = (HttpWebResponse)httpWebRequest.GetResponse())
-                {
-                    using (Stream stream = httpWebReponse.GetResponseStream())
-                    {
-                        return Image.FromStream(stream);
+            try {
+                using (var httpWebReponse = (HttpWebResponse) httpWebRequest.GetResponse ()) {
+                    using (Stream stream = httpWebReponse.GetResponseStream ()) {
+                        return new MagickImage (stream);
                     }
                 }
 		    }
-		    catch (Exception)
-		    {
-                return EmptyImage;
+            catch (Exception) {
+		        return EmptyImage;
 		    }
 		
 		}

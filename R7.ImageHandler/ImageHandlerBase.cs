@@ -32,6 +32,7 @@ using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Security;
 using System.Web;
+using R7.ImageHandler.Transforms;
 
 namespace R7.ImageHandler
 {
@@ -56,7 +57,7 @@ namespace R7.ImageHandler
 		/// <summary>
 		/// A list of image transforms that will be applied successively to the image
 		/// </summary>
-		protected List<ImageTransformBase> ImageTransforms
+        protected List<MagickTransformBase> ImageTransforms
 		{
 			get { return Implementation.ImageTransforms; }
 		}

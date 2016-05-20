@@ -38,6 +38,8 @@ using System.IO;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.FileSystem;
+using ImageMagick;
+using R7.ImageHandler.Transforms;
 
 namespace R7.ImageHandler
 {
@@ -45,12 +47,12 @@ namespace R7.ImageHandler
 	{
 		private string defaultImageFile = "";
 
-		private Image EmptyImage
+		private MagickImage EmptyImage
 		{
 			get
 			{
-				var emptyBmp = new Bitmap (1, 1, PixelFormat.Format1bppIndexed);
-				emptyBmp.MakeTransparent ();
+                var emptyBmp = new MagickImage (new MagickColor (Color.White), 1, 1);
+                emptyBmp.Transparent (new MagickColor (Color.White));
 				ContentType = ImageFormat.Png;
 
 				if (!string.IsNullOrEmpty (defaultImageFile))
@@ -81,14 +83,14 @@ namespace R7.ImageHandler
 
 					if (File.Exists (defaultImageFile))
 					{
-						emptyBmp = new Bitmap (Image.FromFile (defaultImageFile, true));
+                        emptyBmp = new MagickImage (defaultImageFile);
 					}
 					else
 					{
 						defaultImageFile = Path.GetFullPath (HttpContext.Current.Request.PhysicalApplicationPath + defaultImageFile);
 						if (File.Exists (defaultImageFile))
 						{
-							emptyBmp = new Bitmap (Image.FromFile (defaultImageFile, true));
+                            emptyBmp = new MagickImage (defaultImageFile);
 						}
 					}
 				}
@@ -297,6 +299,8 @@ namespace R7.ImageHandler
 				return new ImageInfo (EmptyImage);
 			}
 
+            #if REVIEWED
+
 			// Db Transform
 			if (!string.IsNullOrEmpty (parameters ["db"]))
 			{
@@ -369,6 +373,7 @@ namespace R7.ImageHandler
 				dbTrans.EmptyImage = EmptyImage;
 				ImageTransforms.Add (dbTrans);
 			}
+
 
 
 			/*
@@ -449,27 +454,25 @@ namespace R7.ImageHandler
 				ImageTransforms.Add (dbTrans);
 			}
 
+            #endif
+
 			// Url Transform
 			if (!string.IsNullOrEmpty (parameters ["url"]))
 			{
-				var urlTrans = new ImageUrlTransform ();
+				var urlTrans = new MagickUrlTransform ();
 
 				urlTrans.InterpolationMode = Settings.InterpolationMode;
 				urlTrans.PixelOffsetMode = Settings.PixelOffsetMode;
 				urlTrans.SmoothingMode = Settings.SmoothingMode;
 				urlTrans.CompositingQuality = Settings.CompositingQuality;
 
-				/*
-				urlTrans.InterpolationMode = InterpolationMode.HighQualityBicubic;
-				urlTrans.PixelOffsetMode = PixelOffsetMode.HighQuality;
-				urlTrans.SmoothingMode = SmoothingMode.HighQuality;
-				urlTrans.CompositingQuality = CompositingQuality.HighQuality;*/
-
 				urlTrans.Url = parameters ["url"];
-				if (!String.IsNullOrEmpty (parameters ["ratio"]))
-					urlTrans.Ratio = (UrlRatioMode)Enum.Parse (typeof(UrlRatioMode), parameters ["ratio"], true);
-				else
-					urlTrans.Ratio = UrlRatioMode.Full;
+                if (!String.IsNullOrEmpty (parameters ["ratio"])) {
+                    urlTrans.Ratio = (UrlRatioMode) Enum.Parse (typeof (UrlRatioMode), parameters ["ratio"], true);
+                }
+                else {
+                    urlTrans.Ratio = UrlRatioMode.Full;
+                }
 
 				ImageTransforms.Add (urlTrans);
 			}
@@ -477,23 +480,19 @@ namespace R7.ImageHandler
 			// ImageUrl Transform
 			if (!string.IsNullOrEmpty (parameters ["imageurl"]))
 			{
-				var imageUrlTrans = new ImageUrlImageTransform ();
+				var imageUrlTrans = new MagickUrlImageTransform ();
 
 				imageUrlTrans.InterpolationMode = Settings.InterpolationMode;
 				imageUrlTrans.PixelOffsetMode = Settings.PixelOffsetMode;
 				imageUrlTrans.SmoothingMode = Settings.SmoothingMode;
 				imageUrlTrans.CompositingQuality = Settings.CompositingQuality;
 
-				/*
-				imageUrlTrans.InterpolationMode = InterpolationMode.HighQualityBicubic;
-				imageUrlTrans.PixelOffsetMode = PixelOffsetMode.HighQuality;
-				imageUrlTrans.SmoothingMode = SmoothingMode.HighQuality;
-				imageUrlTrans.CompositingQuality = CompositingQuality.HighQuality;*/
-
 				imageUrlTrans.ImageUrl = parameters ["imageurl"];
 
 				ImageTransforms.Add (imageUrlTrans);
 			}
+
+            #if REVIEWED
 
 			// Counter Transform
 			if (!string.IsNullOrEmpty (parameters ["counter"]))
@@ -548,17 +547,12 @@ namespace R7.ImageHandler
 
 			}
 
-			// Barcode 
+            #endif
+			
+            // Barcode 
 			if (!string.IsNullOrEmpty ((parameters ["barcode"])))
 			{
-				var barcodeTrans = new ImageBarcodeTransform ();
-
-				/*
-				barcodeTrans.InterpolationMode = InterpolationMode.HighQualityBicubic;
-				barcodeTrans.PixelOffsetMode = PixelOffsetMode.HighQuality;
-				barcodeTrans.SmoothingMode = SmoothingMode.HighQuality;
-				barcodeTrans.CompositingQuality = CompositingQuality.HighQuality;
-				*/
+				var barcodeTrans = new MagickBarcodeTransform ();
 
 				barcodeTrans.InterpolationMode = Settings.InterpolationMode;
 				barcodeTrans.PixelOffsetMode = Settings.PixelOffsetMode;
@@ -569,8 +563,9 @@ namespace R7.ImageHandler
 				barcodeTrans.Width = 100;
 				barcodeTrans.Height = 100;
 
-				if (!string.IsNullOrEmpty (parameters ["encoding"]))
-					barcodeTrans.Encoding = parameters ["encoding"];
+                if (!string.IsNullOrEmpty (parameters ["encoding"])) {
+                    barcodeTrans.Encoding = parameters ["encoding"];
+                }
 
 				if (!string.IsNullOrEmpty (parameters ["type"]) && 
 					"upca,ean8,ean13,code39,code128,itf,codabar,plessey,msi,qrcode,pdf417,aztec,datamatrix,".LastIndexOf (parameters ["type"].ToLowerInvariant() + ",") > -1)
@@ -596,6 +591,8 @@ namespace R7.ImageHandler
 
 				ImageTransforms.Add (barcodeTrans);
 			}
+
+            #if REVIEWED
 
 			if (!string.IsNullOrEmpty ((parameters ["schedule"])))
 			{
@@ -630,18 +627,24 @@ namespace R7.ImageHandler
 				ImageTransforms.Add (scheduleTrans);
 			}
 
+            #endif
+
 			// Resize-Transformation (only if not placeholder or barcode)
 			if (string.IsNullOrEmpty (parameters ["placeholder"]) && string.IsNullOrEmpty (parameters ["barcode"]) &&
 			             (!string.IsNullOrEmpty (parameters ["width"]) || !string.IsNullOrEmpty (parameters ["height"]) ||
 			             (!string.IsNullOrEmpty (parameters ["maxwidth"]) || !string.IsNullOrEmpty (parameters ["maxheight"]))))
 			{
-				var resizeTrans = new ImageResizeTransform ();
+				var resizeTrans = new MagickResizeTransform ();
 				resizeTrans.Mode = ImageResizeMode.Fit;
 
+                /*
 				resizeTrans.InterpolationMode = Settings.InterpolationMode;
 				resizeTrans.PixelOffsetMode = Settings.PixelOffsetMode;
 				resizeTrans.SmoothingMode = Settings.SmoothingMode;
 				resizeTrans.CompositingQuality = Settings.CompositingQuality;
+                */
+
+
 				/*
 				resizeTrans.InterpolationMode = InterpolationMode.HighQualityBicubic;
 				resizeTrans.PixelOffsetMode = PixelOffsetMode.HighQuality;
@@ -681,6 +684,8 @@ namespace R7.ImageHandler
 
 				ImageTransforms.Add (resizeTrans);
 			}
+
+            #if REVIEWED
 
 			// Watermark Transform
 			if (!string.IsNullOrEmpty (parameters ["watermarktext"]))
@@ -832,7 +837,7 @@ namespace R7.ImageHandler
 				ImageTransforms.Add (invertTrans);
 			}
 
-			// Rotate / Flip 
+            // Rotate / Flip 
 			if (!string.IsNullOrEmpty (parameters ["rotateflip"]))
 			{
 				var rotateFlipTrans = new ImageRotateFlipTransform ();
@@ -841,13 +846,6 @@ namespace R7.ImageHandler
 				rotateFlipTrans.PixelOffsetMode = PixelOffsetMode.HighQuality;
 				rotateFlipTrans.SmoothingMode = SmoothingMode.HighQuality;
 				rotateFlipTrans.CompositingQuality = CompositingQuality.HighQuality;
-
-				/*
-				rotateFlipTrans.InterpolationMode = InterpolationMode.HighQualityBicubic;
-				rotateFlipTrans.PixelOffsetMode = PixelOffsetMode.HighQuality;
-				rotateFlipTrans.SmoothingMode = SmoothingMode.HighQuality;
-				rotateFlipTrans.CompositingQuality = CompositingQuality.HighQuality;
-				*/
 
 				var rotateFlipType = (RotateFlipType)Enum.Parse (typeof(RotateFlipType), parameters ["RotateFlip"]);
 				rotateFlipTrans.RotateFlip = rotateFlipType;
@@ -894,6 +892,8 @@ namespace R7.ImageHandler
 
 				ImageTransforms.Add (placeHolderTrans);
 			}
+
+            #endif
 
 			if (imgFile == string.Empty)
 			{

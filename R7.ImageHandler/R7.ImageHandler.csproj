@@ -60,6 +60,9 @@
     <Reference Include="DotNetNuke.WebUtility">
       <HintPath>..\packages\DotNetNuke.Web.7.4.2.216\lib\net40\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
+    <Reference Include="Magick.NET-Q8-x64">
+      <HintPath>..\packages\Magick.NET-Q8-x64.7.0.1.101\lib\net40-client\Magick.NET-Q8-x64.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,7 +72,6 @@
     <Compile Include="Quantizers\GrayscaleQuantizer.cs" />
     <Compile Include="Quantizers\OctreeQuantizer.cs" />
     <Compile Include="Quantizers\PaletteQuantizer.cs" />
-    <Compile Include="Transforms\ImageBarcodeTransform.cs" />
     <Compile Include="Transforms\ImageBrightnessTransform.cs" />
     <Compile Include="Transforms\ImageContrastTransform.cs" />
     <Compile Include="Transforms\ImageCounterTransform.cs" />
@@ -82,8 +84,6 @@
     <Compile Include="Transforms\ImageResizeTransform.cs" />
     <Compile Include="Transforms\ImageRotateFlipTransform.cs" />
     <Compile Include="Transforms\ImageScheduleTransform.cs" />
-    <Compile Include="Transforms\ImageUrlImageTransform.cs" />
-    <Compile Include="Transforms\ImageUrlTransform.cs" />
     <Compile Include="Transforms\ImageWatermarkTransform.cs" />
     <Compile Include="Transforms\IEBrowser.cs" />
     <Compile Include="Transforms\ImageTransformBase.cs" />
@@ -98,8 +98,14 @@
     <Compile Include="Utils.cs" />
     <Compile Include="Quantizers\QuantizerBase.cs" />
     <Compile Include="ImageHandlerSettings.cs" />
+    <Compile Include="Transforms\MagickTransformBase.cs" />
+    <Compile Include="Transforms\MagickResizeTransform.cs" />
+    <Compile Include="Transforms\MagickUrlTransform.cs" />
+    <Compile Include="Transforms\MagickBarcodeTransform.cs" />
+    <Compile Include="Transforms\MagickUrlImageTransform.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Magick.NET-Q8-x64.7.0.1.101\build\net40-client\Magick.NET-Q8-x64.targets" Condition="Exists('..\packages\Magick.NET-Q8-x64.7.0.1.101\build\net40-client\Magick.NET-Q8-x64.targets')" />
   <ItemGroup>
     <None Include="imagehandler.ashx" />
     <None Include="R7.ImageHandler.dnn" />

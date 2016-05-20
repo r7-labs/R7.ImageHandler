@@ -36,6 +36,8 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using DotNetNuke.Entities.Host;
+using ImageMagick;
+using R7.ImageHandler.Transforms;
 
 namespace R7.ImageHandler
 {
@@ -50,7 +52,7 @@ namespace R7.ImageHandler
 			get { return DiskImageStore.Instance; }
 		}
 
-		public List<ImageTransformBase> ImageTransforms { get; private set; }
+        public List<MagickTransformBase> ImageTransforms { get; private set; }
 
 		public ImageHandlerInternal ()
 		{
@@ -58,7 +60,7 @@ namespace R7.ImageHandler
 			Settings = ImageHandlerSettings.Instance;
 
 			ContentType = ImageFormat.Jpeg;
-			ImageTransforms = new List<ImageTransformBase> ();
+            ImageTransforms = new List<MagickTransformBase> ();
 		}
 
         private HttpCacheability GetDnnCacheability (HttpContextBase context)
@@ -192,7 +194,7 @@ namespace R7.ImageHandler
 			return Utils.GetIDFromBytes (ASCIIEncoding.ASCII.GetBytes (builder.ToString ()));
 		}
 
-		private Image GetImageThroughTransforms (Image image)
+        private MagickImage GetImageThroughTransforms (MagickImage image)
 		{
 			var tmpImage = image;
 
@@ -202,14 +204,18 @@ namespace R7.ImageHandler
 			return tmpImage;
 		}
 
-		private Image GetImageThroughTransforms (byte[] buffer)
+        private MagickImage GetImageThroughTransforms (byte[] buffer)
 		{
-			var memoryStream = new MemoryStream (buffer);
-			return GetImageThroughTransforms (Image.FromStream (memoryStream));
+			//var memoryStream = new MemoryStream (buffer);
+            return GetImageThroughTransforms (new MagickImage (buffer));
 		}
 
-		private void RenderImage (Image image, Stream outStream)
+		private void RenderImage (MagickImage image, Stream outStream)
 		{
+            image.Write (outStream);
+
+            #if REVIEWED
+
 			if (ContentType == ImageFormat.Gif)
 			{
 				var quantizer = new OctreeQuantizer (255, 8);
@@ -225,6 +231,8 @@ namespace R7.ImageHandler
 				ImageCodecInfo ici = Utils.GetEncoderInfo (Utils.GetImageMimeType (ContentType));
 				image.Save (outStream, ici, encParams);
 			}
+
+            #endif
 		}
 
 

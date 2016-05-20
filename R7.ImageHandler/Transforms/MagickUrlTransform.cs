@@ -4,7 +4,7 @@
 // Author:
 //       Roman M. Yagodin <roman.yagodin@gmail.com>
 //
-// Copyright (c) 2014 
+// Copyright (c) 2014-2016 Roman M. Yagodin
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,11 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Threading;
+using ImageMagick;
 
-namespace R7.ImageHandler
+namespace R7.ImageHandler.Transforms
 {
-	public class ImageUrlTransform : ImageTransformBase
+	public class MagickUrlTransform: MagickTransformBase
 	{
 		/// <summary>
 		/// Sets the Url. Defaultvalue is empty
@@ -49,27 +50,24 @@ namespace R7.ImageHandler
 
 		public override string UniqueString
 		{
-			get
-			{
-				return base.UniqueString + "-" + this.Url + "-" + this.Ratio.ToString();
-			}
+            get { return base.UniqueString + "-" + Url + "-" + Ratio; }
 		}
 
-		public ImageUrlTransform()
+		public MagickUrlTransform()
 		{
+            // TODO: Default valued should be set in config
 			InterpolationMode = InterpolationMode.HighQualityBicubic;
 			SmoothingMode = SmoothingMode.Default;
 			PixelOffsetMode = PixelOffsetMode.Default;
 			CompositingQuality = CompositingQuality.HighSpeed;
-
 		}
 
-		public override Image ProcessImage(Image image)
+		public override MagickImage ProcessImage (MagickImage image)
 		{
-			AutoResetEvent resultEvent = new AutoResetEvent(false);
-			IEBrowser browser = new IEBrowser(Url, Ratio, resultEvent);
-			WaitHandle.WaitAll(new[] { resultEvent });
-			return browser.Thumb;
+			var resultEvent = new AutoResetEvent (false);
+			var browser = new IEBrowser (Url, Ratio, resultEvent);
+			WaitHandle.WaitAll (new [] { resultEvent });
+            return new MagickImage (new Bitmap (browser.Thumb));
 		}
 	}
 }

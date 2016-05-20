@@ -1,10 +1,10 @@
 ﻿//
-// ImageBarcodeTransform.cs
+// MagickBarcodeTransform.cs
 //
 // Author:
 //       Roman M. Yagodin <roman.yagodin@gmail.com>
 //
-// Copyright (c) 2014 
+// Copyright (c) 2014-2016 Roman M. Yagodin
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,130 +25,128 @@
 // THE SOFTWARE.
 
 using System.ComponentModel;
-using System.Drawing;
 using System.Drawing.Drawing2D;
 using ZXing;
 using ZXing.Common;
+using ImageMagick;
 
-namespace R7.ImageHandler
+namespace R7.ImageHandler.Transforms
 {
-	public class ImageBarcodeTransform : ImageTransformBase
-	{
-		/// <summary>
-		/// Sets the barcode type 
+
+    public class MagickBarcodeTransform : MagickTransformBase
+    {
+        /// <summary>
+        /// Sets the barcode type 
         /// (upca,ean8,ean13,code39,code128,itf,codabar,plessey,msi,qrcode,pdf417,aztec,datamatrix)
-		/// </summary>
-		[DefaultValue("")]
-		[Category("Behavior")]
-		public string Type { get; set; }
+        /// </summary>
+        [DefaultValue ("")]
+        [Category ("Behavior")]
+        public string Type { get; set; }
 
         /// <summary>
         /// Sets the barcode content 
         /// (upca,ean8,ean13,code39,code128,itf,codabar,plessey,msi,qrcode,pdf417,aztec,datamatrix)
         /// </summary>
-        [DefaultValue("")]
-        [Category("Behavior")]
+        [DefaultValue ("")]
+        [Category ("Behavior")]
         public string Content { get; set; }
 
-		/// <summary>
-		/// Sets the Width of the generated barcode
-		/// </summary>
-		[DefaultValue("")]
-		[Category("Behavior")]
-		public int Width { get; set; }
+        /// <summary>
+        /// Sets the Width of the generated barcode
+        /// </summary>
+        [DefaultValue ("")]
+        [Category ("Behavior")]
+        public int Width { get; set; }
 
         /// <summary>
         /// Sets the Height of the generated barcode
         /// </summary>
-        [DefaultValue("")]
-        [Category("Behavior")]
+        [DefaultValue ("")]
+        [Category ("Behavior")]
         public int Height { get; set; }
 
         /// <summary>
         /// Sets the Border Width (not pixels, depends on barcode type)
         /// </summary>
-        [DefaultValue("")]
-        [Category("Behavior")]
+        [DefaultValue ("")]
+        [Category ("Behavior")]
         public int Border { get; set; }
 
-		[DefaultValue("")]
-		[Category("Behavior")]
-		public string Encoding { get; set; }
+        [DefaultValue ("")]
+        [Category ("Behavior")]
+        public string Encoding { get; set; }
 
-		public override string UniqueString
-		{
-			get { return base.UniqueString + this.Type + "-" + this.Width.ToString() + "-" + this.Height.ToString() + this.Content + "-" + this.Border.ToString(); }
-		}
+        public override string UniqueString
+        {
+            get { return base.UniqueString + Type + "-" + Width + "-" + Height + Content + "-" + Border; }
+        }
 
-        public ImageBarcodeTransform()
-		{
-			InterpolationMode = InterpolationMode.HighQualityBicubic;
-			SmoothingMode = SmoothingMode.Default;
-			PixelOffsetMode = PixelOffsetMode.Default;
-			CompositingQuality = CompositingQuality.HighSpeed;
-		}
+        public MagickBarcodeTransform () {
+            InterpolationMode = InterpolationMode.HighQualityBicubic;
+            SmoothingMode = SmoothingMode.Default;
+            PixelOffsetMode = PixelOffsetMode.Default;
+            CompositingQuality = CompositingQuality.HighSpeed;
+        }
 
-		public override Image ProcessImage(Image image)
-		{
-			var barcodeWriter = new BarcodeWriter ();
+        public override MagickImage ProcessImage (MagickImage image)
+        {
+            var barcodeWriter = new BarcodeWriter ();
 
-		    switch (Type)
-		    {
+            switch (Type) {
                 case "upca":
                     barcodeWriter.Format = BarcodeFormat.UPC_A;
-		            break;
+                    break;
                 case "ean8":
                     barcodeWriter.Format = BarcodeFormat.EAN_8;
-		            break;
+                    break;
                 case "ean13":
                     barcodeWriter.Format = BarcodeFormat.EAN_13;
-		            break;
+                    break;
                 case "code39":
                     barcodeWriter.Format = BarcodeFormat.CODE_39;
-		            break;
+                    break;
                 case "code128":
                     barcodeWriter.Format = BarcodeFormat.CODE_128;
-		            break;
+                    break;
                 case "itf":
                     barcodeWriter.Format = BarcodeFormat.ITF;
-		            break;
+                    break;
                 case "codabar":
                     barcodeWriter.Format = BarcodeFormat.CODABAR;
-		            break;
+                    break;
                 case "plessey":
                     barcodeWriter.Format = BarcodeFormat.PLESSEY;
-		            break;
+                    break;
                 case "msi":
                     barcodeWriter.Format = BarcodeFormat.MSI;
-		            break;
+                    break;
                 case "qrcode":
                     barcodeWriter.Format = BarcodeFormat.QR_CODE;
-		            break;
+                    break;
                 case "pdf417":
                     barcodeWriter.Format = BarcodeFormat.PDF_417;
-		            break;
+                    break;
                 case "aztec":
                     barcodeWriter.Format = BarcodeFormat.AZTEC;
-		            break;
+                    break;
                 case "datamatrix":
                     barcodeWriter.Format = BarcodeFormat.DATA_MATRIX;
-		            break;
-		    }
+                    break;
+            }
 
-		    barcodeWriter.Options = new EncodingOptions
-		                            {
-		                                Height = Height,
-		                                Width = Width,
-		                                Margin = Border
-		                            };
+            barcodeWriter.Options = new EncodingOptions {
+                Height = Height,
+                Width = Width,
+                Margin = Border
+            };
 
-			// set character encoding, if specified
-			// NOTE: Need more info about ZXing-supported encodings
-			if (!string.IsNullOrEmpty(Encoding))
-				barcodeWriter.Options.Hints.Add(EncodeHintType.CHARACTER_SET, Encoding);
+            // set character encoding, if specified
+            // NOTE: Need more info about ZXing-supported encodings
+            if (!string.IsNullOrEmpty (Encoding)) {
+                barcodeWriter.Options.Hints.Add (EncodeHintType.CHARACTER_SET, Encoding);
+            }
 
-		    Bitmap bitmap = barcodeWriter.Write(Content);
-		    return (Image) bitmap;
-		}
-	}
+            return new MagickImage (barcodeWriter.Write (Content));
+        }
+    }
 }
