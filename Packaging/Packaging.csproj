@@ -55,4 +55,10 @@
   <ItemGroup>
     <Compile Include="Dummy.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\R7.ImageHandler\R7.ImageHandler.csproj">
+      <Project>{3690864E-F560-4420-8583-FBA2E72DDAC6}</Project>
+      <Name>R7.ImageHandler</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

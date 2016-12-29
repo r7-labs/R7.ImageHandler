@@ -8,6 +8,8 @@
 	    <!-- Declare binaries -->
         <ItemGroup>
             <InstallBinaryFiles Include="$(MainProjectOutputPath)\R7.ImageHandler*.dll" />
+			<InstallBinaryFiles Include="$(MainProjectOutputPath)\zxing.dll" />
+			<InstallBinaryFiles Include="$(MainProjectOutputPath)\zxing.presentation.dll" />
         </ItemGroup>
         <!-- Declare manifest files -->
         <ItemGroup>
