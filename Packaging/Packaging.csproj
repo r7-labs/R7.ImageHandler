@@ -47,7 +47,7 @@
     <PackageOutputPath>output</PackageOutputPath>
     <DnnLocalDeployPath Condition="'$(OS)' != 'Unix'">C:\Dotnetnuke</DnnLocalDeployPath>
     <DnnLocalDeployPath Condition="'$(OS)' == 'Unix'">/home/redhound/mnt/dnn</DnnLocalDeployPath>
-    <MainProjectOutputPath>..\R7.ImageHandler\bin</MainProjectOutputPath>
+    <MainProjectOutputPath>..\R7.ImageHandler\bin\$(Configuration)</MainProjectOutputPath>
   </PropertyGroup>
   <Import Project="Install.targets" />
   <Import Project="LocalDeploy.targets" />
