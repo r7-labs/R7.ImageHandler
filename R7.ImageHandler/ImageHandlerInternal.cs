@@ -4,7 +4,7 @@
 // Author:
 //       Roman M. Yagodin <roman.yagodin@gmail.com>
 //
-// Copyright (c) 2014-2015
+// Copyright (c) 2014-2017
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +36,8 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using DotNetNuke.Entities.Host;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Log.EventLog;
 
 namespace R7.ImageHandler
 {
@@ -103,26 +105,34 @@ namespace R7.ImageHandler
 				if (!string.IsNullOrEmpty (context.Request.Headers ["If-Modified-Since"]) && 
 					!string.IsNullOrEmpty (context.Request.Headers ["If-None-Match"]))
 				{
-					var provider = CultureInfo.InvariantCulture;
-					var lastMod = DateTime.ParseExact (context.Request.Headers ["If-Modified-Since"], "r", provider).ToLocalTime ();
-					var etag = context.Request.Headers ["If-None-Match"];
-					if (lastMod + Settings.ClientCacheExpiration > Settings.Now && etag == cacheId)
-					{
-						// send 304 when cache time is not expired
-						context.Response.StatusCode = 304;
-						context.Response.StatusDescription = "Not Modified";
-						context.Response.End ();
+                    try {
+					    var provider = CultureInfo.InvariantCulture;
+                        var lastMod = DateTime.ParseExact (context.Request.Headers ["If-Modified-Since"], "r", provider).ToLocalTime ();
+                        var etag = context.Request.Headers ["If-None-Match"];
+                        if (lastMod + Settings.ClientCacheExpiration > Settings.Now && etag == cacheId) {
+                            // send 304 when cache time is not expired
+                            context.Response.StatusCode = 304;
+                            context.Response.StatusDescription = "Not Modified";
+                            context.Response.End ();
+                            return;
+                        }
+                    }
+                    catch (Exception ex) {
+                        var logEntry = new LogInfo ();
+                        logEntry.Exception = new ExceptionInfo (ex);
+                        logEntry.LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString ();
+                        EventLogController.Instance.AddLog (logEntry);
 
-						return;
-					}
+                    }
 				}
+
                 cachePolicy.SetCacheability (GetDnnCacheability (context));
 				cachePolicy.SetLastModified (Settings.Now);
 
 				// REVIEW: Check if DNN has option about client cache expiration?
 				cachePolicy.SetExpires (Settings.Now + Settings.ClientCacheExpiration);
 				cachePolicy.SetETag (cacheId);
-			} 
+			}
 
 			// get image filename, if any
 			var imgFile = imageFilenameCallback (context.Request.QueryString);
