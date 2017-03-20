@@ -146,24 +146,24 @@ namespace R7.ImageHandler
 
 		public override Image ProcessImage (Image img)
 		{
-			if (this.MaxWidth > 0)
-			{
-				if (img.Width > this.MaxWidth)
-					this.Width = this.MaxWidth;
-				else
-					this.Width = img.Width;
+            if (MaxWidth > 0) {
+                if (img.Width > MaxWidth) {
+                    Width = MaxWidth;
+                } else {
+                    Width = img.Width;
+                }
 			}
 
-			if (this.MaxHeight > 0)
-			{
-				if (img.Height > this.MaxHeight)
-					this.Height = this.MaxHeight;
-				else
-					this.Height = img.Height;
+            if (MaxHeight > 0) {
+                if (img.Height > MaxHeight) {
+                    Height = MaxHeight;
+                } else {
+                    Height = img.Height;
+                }
 			}
 
-			var scaledHeight = (int)(img.Height * ((float)this.Width / (float)img.Width));
-			var scaledWidth = (int)(img.Width * ((float)this.Height / (float)img.Height));
+			var scaledHeight = (int) (img.Height * ((float) Width / (float) img.Width));
+			var scaledWidth = (int) (img.Width * ((float) Height / (float) img.Height));
 
 			Image procImage;
 			switch (Mode)
