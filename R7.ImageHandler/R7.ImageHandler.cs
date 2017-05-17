@@ -4,7 +4,7 @@
 // Author:
 //       Roman M. Yagodin <roman.yagodin@gmail.com>
 //
-// Copyright (c) 2014 
+// Copyright (c) 2014-2017
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -581,11 +581,19 @@ namespace R7.ImageHandler
 				{
 					barcodeTrans.Content = HttpUtility.UrlDecode(parameters ["content"]);
 				}
-				if (!string.IsNullOrEmpty (parameters ["width"]))
+				if (!string.IsNullOrEmpty (parameters ["w"]))
 				{
-					barcodeTrans.Width = Convert.ToInt32 (parameters ["width"]);
+					barcodeTrans.Width = Convert.ToInt32 (parameters ["w"]);
 				}
-				if (!string.IsNullOrEmpty (parameters ["height"]))
+                else if (!string.IsNullOrEmpty (parameters ["width"]))
+                {
+                    barcodeTrans.Width = Convert.ToInt32 (parameters ["width"]);
+                }
+                if (!string.IsNullOrEmpty (parameters ["h"]))
+                {
+                    barcodeTrans.Height = Convert.ToInt32 (parameters ["h"]);
+                }
+				else if (!string.IsNullOrEmpty (parameters ["height"]))
 				{
 					barcodeTrans.Height = Convert.ToInt32 (parameters ["height"]);
 				}
@@ -632,8 +640,9 @@ namespace R7.ImageHandler
 
 			// Resize-Transformation (only if not placeholder or barcode)
 			if (string.IsNullOrEmpty (parameters ["placeholder"]) && string.IsNullOrEmpty (parameters ["barcode"]) &&
-			             (!string.IsNullOrEmpty (parameters ["width"]) || !string.IsNullOrEmpty (parameters ["height"]) ||
-			             (!string.IsNullOrEmpty (parameters ["maxwidth"]) || !string.IsNullOrEmpty (parameters ["maxheight"]))))
+                (!string.IsNullOrEmpty (parameters ["w"]) || !string.IsNullOrEmpty (parameters ["h"]) ||
+                 (!string.IsNullOrEmpty (parameters ["width"]) || !string.IsNullOrEmpty (parameters ["height"]) ||
+                  (!string.IsNullOrEmpty (parameters ["maxwidth"]) || !string.IsNullOrEmpty (parameters ["maxheight"])))))
 			{
 				var resizeTrans = new ImageResizeTransform ();
 				resizeTrans.Mode = ImageResizeMode.Fit;
@@ -658,15 +667,25 @@ namespace R7.ImageHandler
 					// TODO: Use Enum.TryParse and fallback resize mode
 					resizeTrans.Mode = (ImageResizeMode)Enum.Parse (typeof(ImageResizeMode), parameters ["resizemode"], true);
 
-				if (!string.IsNullOrEmpty (parameters ["width"]))
+				if (!string.IsNullOrEmpty (parameters ["w"]))
 				{
-					resizeTrans.Width = Convert.ToInt32 (parameters ["width"]);
+					resizeTrans.Width = Convert.ToInt32 (parameters ["w"]);
 				}
-				if (!string.IsNullOrEmpty (parameters ["height"]))
+                else if (!string.IsNullOrEmpty (parameters ["width"]))
+                {
+                    resizeTrans.Width = Convert.ToInt32 (parameters ["width"]);
+                }
+
+				if (!string.IsNullOrEmpty (parameters ["h"]))
 				{
-					resizeTrans.Height = Convert.ToInt32 (parameters ["height"]);
+					resizeTrans.Height = Convert.ToInt32 (parameters ["h"]);
 				}
-				if (!string.IsNullOrEmpty (parameters ["maxwidth"]))
+                else if (!string.IsNullOrEmpty (parameters ["height"]))
+                {
+                    resizeTrans.Height = Convert.ToInt32 (parameters ["height"]);
+                }
+
+                if (!string.IsNullOrEmpty (parameters ["maxwidth"]))
 				{
 					resizeTrans.MaxWidth = Convert.ToInt32 (parameters ["maxwidth"]);
 				}
@@ -873,10 +892,26 @@ namespace R7.ImageHandler
 				var width = 0;
 				var height = 0;
 
-				if (int.TryParse (parameters ["width"], out width))
-					placeHolderTrans.Width = width;
-				if (int.TryParse (parameters ["height"], out height))
-					placeHolderTrans.Height = height;
+                if (!string.IsNullOrEmpty (parameters ["w"])) {
+                    if (int.TryParse (parameters ["w"], out width)) {
+                        placeHolderTrans.Width = width;
+                    }
+                } else if (!string.IsNullOrEmpty (parameters ["width"])) {
+                    if (int.TryParse (parameters ["width"], out width)) {
+                        placeHolderTrans.Width = width;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty (parameters ["h"])) {
+                    if (int.TryParse (parameters ["h"], out height)) {
+                        placeHolderTrans.Height = height;
+                    }
+                } else if (!string.IsNullOrEmpty (parameters ["height"])) {
+                    if (int.TryParse (parameters ["height"], out height)) {
+                        placeHolderTrans.Height = height;
+                    }
+                }
+
 				if (!string.IsNullOrEmpty (parameters ["color"]))
 				{
 					string color = parameters ["color"];
