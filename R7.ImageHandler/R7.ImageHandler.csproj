@@ -88,8 +88,6 @@
     <Compile Include="Transforms\IEBrowser.cs" />
     <Compile Include="Transforms\ImageTransformBase.cs" />
     <Compile Include="ImageHandlerBase.cs" />
-    <Compile Include="FileLinkClickController\FileLinkClickController.cs" />
-    <Compile Include="FileLinkClickController\IFileLinkClickController.cs" />
     <Compile Include="Modes\ImageResizeMode.cs" />
     <Compile Include="Modes\UrlRatioMode.cs" />
     <Compile Include="Modes\WatermarkPositionMode.cs" />
@@ -119,7 +117,6 @@
     <Folder Include="Quantizers\" />
     <Folder Include="Transforms\" />
     <Folder Include="excluded\" />
-    <Folder Include="FileLinkClickController\" />
     <Folder Include="Modes\" />
     <Folder Include="ImageStore\" />
     <Folder Include="Notes\" />
