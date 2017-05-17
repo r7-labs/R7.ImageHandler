@@ -38,6 +38,7 @@ using System.Web;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.Services.GeneratedImage.ImageQuantization;
 
 namespace R7.ImageHandler
 {

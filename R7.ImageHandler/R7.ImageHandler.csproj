@@ -66,9 +66,6 @@
     <Compile Include="ImageHandlerInternal.cs" />
     <Compile Include="ImageInfo.cs" />
     <Compile Include="R7.ImageHandler.cs" />
-    <Compile Include="Quantizers\GrayscaleQuantizer.cs" />
-    <Compile Include="Quantizers\OctreeQuantizer.cs" />
-    <Compile Include="Quantizers\PaletteQuantizer.cs" />
     <Compile Include="Transforms\ImageBarcodeTransform.cs" />
     <Compile Include="Transforms\ImageBrightnessTransform.cs" />
     <Compile Include="Transforms\ImageContrastTransform.cs" />
@@ -94,7 +91,6 @@
     <Compile Include="ImageStore\IImageStore.cs" />
     <Compile Include="ImageStore\DiskImageStore.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="Quantizers\QuantizerBase.cs" />
     <Compile Include="ImageHandlerSettings.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -113,7 +109,6 @@
     <None Include="releaseNotes.htm" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Quantizers\" />
     <Folder Include="Transforms\" />
     <Folder Include="excluded\" />
     <Folder Include="Modes\" />
