@@ -42,12 +42,6 @@
     <Reference Include="System.Net" />
     <Reference Include="System.Design" />
     <Reference Include="System.Configuration" />
-    <Reference Include="zxing">
-      <HintPath>..\packages\ZXing.Net.0.14.0.1\lib\net40\zxing.dll</HintPath>
-    </Reference>
-    <Reference Include="zxing.presentation">
-      <HintPath>..\packages\ZXing.Net.0.14.0.1\lib\net40\zxing.presentation.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke">
       <HintPath>..\packages\DotNetNuke.Core.8.0.4.226\lib\net40\DotNetNuke.dll</HintPath>
     </Reference>
@@ -59,6 +53,12 @@
     </Reference>
     <Reference Include="DotNetNuke.WebUtility">
       <HintPath>..\packages\DotNetNuke.Web.8.0.4.226\lib\net40\DotNetNuke.WebUtility.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing">
+      <HintPath>..\packages\ZXing.Net.0.15.0\lib\net45\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation">
+      <HintPath>..\packages\ZXing.Net.0.15.0\lib\net45\zxing.presentation.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
