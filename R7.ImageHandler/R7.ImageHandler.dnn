@@ -32,17 +32,7 @@
             </assembly>
           </assemblies>
         </component>
-		<!--
-        <component type="File">
-          <files>
-            <basePath />
-            <file>
-              <name>imagehandler.ashx</name>
-            </file>
-          </files>
-        </component>
-		-->
-        <component type="Config">
+		<component type="Config">
           <config>
 		    <configFile>web.config</configFile>
 		    <install>

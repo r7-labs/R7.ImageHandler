@@ -99,7 +99,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <None Include="imagehandler.ashx" />
     <None Include="R7.ImageHandler.dnn" />
     <None Include="excluded\Resources\WebResources.resx" />
     <None Include="excluded\Resources\WebResources.Designer.cs" />
